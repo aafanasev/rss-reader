@@ -7,10 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.jokuskay.rss_reader.helpers.DbColumns;
 import com.jokuskay.rss_reader.helpers.DbHelper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rss {
+public class Rss implements Serializable {
 
     public static final String TABLE_NAME = "rss";
 

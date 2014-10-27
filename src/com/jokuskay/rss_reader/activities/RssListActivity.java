@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import com.jokuskay.rss_reader.services.GetPostsService;
 
 import java.util.List;
 
-public class RssListActivity extends ActionBarActivity implements AddRssDialog.OnAddRssDialogListener {
+public class RssListActivity extends ActionBarActivity implements AddRssDialog.OnAddRssDialogListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = "RssListActivity";
 
@@ -61,18 +62,7 @@ public class RssListActivity extends ActionBarActivity implements AddRssDialog.O
             }
         });
 
-        mAdapter = new RssAdapter(mRssList, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView view = (TextView) v.findViewById(R.id.view_rss_title);
-
-                Intent intent = new Intent(RssListActivity.this, PostListActivity.class);
-                intent.putExtra(Rss.Columns.title.name(), view.getText().toString());
-                intent.putExtra(Rss.Columns._id.name(), (long) view.getTag());
-
-                startActivity(intent);
-            }
-        });
+        mAdapter = new RssAdapter(mRssList, this);
 
         listView.setAdapter(mAdapter);
 
@@ -117,19 +107,26 @@ public class RssListActivity extends ActionBarActivity implements AddRssDialog.O
 
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(this, PostListActivity.class);
+        intent.putExtra("rss", mRssList.get(position));
+        startActivity(intent);
+    }
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             mRefresh.setRefreshing(false);
 
-            int id = intent.getIntExtra(Rss.Columns._id.name(), 0);
-            String title = intent.getStringExtra(Rss.Columns.title.name());
-            String url = intent.getStringExtra(Rss.Columns.url.name());
+            Rss rss = (Rss) intent.getExtras().getSerializable("rss");
+            if (rss != null) {
+                mRssList.add(rss);
+                mAdapter.notifyItemInserted(mRssList.size());
+            } else {
+                Toast.makeText(RssListActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
 
-//            mRssList.add(new Rss(id, title, url, c.getInt(iLastUpdate)));
-
-            mAdapter.notifyDataSetChanged();
         }
     };
-
 }

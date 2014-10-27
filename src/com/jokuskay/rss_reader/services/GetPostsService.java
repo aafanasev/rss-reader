@@ -41,8 +41,10 @@ public class GetPostsService extends IntentService {
         }
 
         List<Post> posts = getPostsFromWeb(url);
-
-        Log.d(TAG, "" + posts.size());
+        if (posts.size() > 0) {
+            Post.removeAll(this, mRss.getId());
+            Post.add(this, posts);
+        }
 
         sendBroadcast();
     }
@@ -119,9 +121,7 @@ public class GetPostsService extends IntentService {
 
     private void sendBroadcast() {
         Intent intent = new Intent(getPackageName());
-        intent.putExtra(Rss.Columns._id.name(), 1);
-        intent.putExtra(Rss.Columns.title.name(), "Title");
-        intent.putExtra(Rss.Columns.url.name(), "URL");
+        intent.putExtra("rss", mRss);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
