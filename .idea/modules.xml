@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://C:/Program Files/android-sdk-windows/extras/android/support/v7/appcompat/android-support-v7-appcompat.iml" filepath="C:/Program Files/android-sdk-windows/extras/android/support/v7/appcompat/android-support-v7-appcompat.iml" />
+      <module fileurl="file://C:/Program Files/android-sdk-windows/extras/android/support/v7/recyclerview/recyclerview.iml" filepath="C:/Program Files/android-sdk-windows/extras/android/support/v7/recyclerview/recyclerview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rss-reader.iml" filepath="$PROJECT_DIR$/rss-reader.iml" />
+    </modules>
+  </component>
+</project>
+
