@@ -9,19 +9,19 @@
         >
 
     <TextView
-            android:id="@+id/view_rss_title"
+            android:id="@+id/view_post_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/abc_text_size_large_material"
-            android:text="Name"
+            android:text="Title"
             />
 
     <TextView
-            android:id="@+id/view_rss_url"
+            android:id="@+id/view_post_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/abc_text_size_small_material"
-            android:text="URL"
+            android:text="Date"
             />
 
 </LinearLayout>

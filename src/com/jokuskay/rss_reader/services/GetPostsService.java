@@ -3,7 +3,6 @@ package com.jokuskay.rss_reader.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import com.jokuskay.rss_reader.models.Post;
 import com.jokuskay.rss_reader.models.Rss;
 import org.xmlpull.v1.XmlPullParser;
@@ -88,10 +87,10 @@ public class GetPostsService extends IntentService {
     private Post parsePost(XmlPullParser parser) throws IOException, XmlPullParserException {
         Post post = new Post();
 
+        String value = "";
         boolean inProcess = true;
         do {
             int eventType = parser.next();
-            String value = "";
 
             switch (eventType) {
                 case XmlPullParser.TEXT:

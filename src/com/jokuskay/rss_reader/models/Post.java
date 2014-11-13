@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.Html;
 import com.jokuskay.rss_reader.helpers.DbColumns;
 import com.jokuskay.rss_reader.helpers.DbHelper;
 
@@ -15,7 +16,7 @@ public class Post {
     public static final String TABLE_NAME = "posts";
 
     public static enum Columns implements DbColumns {
-        rss_id("INTEGER"), pubDate, title, description, link;
+        _id("INTEGER PRIMARY KEY"), rss_id("INTEGER"), pubDate, title, description, link;
 
         private String type;
 
@@ -33,6 +34,7 @@ public class Post {
 
     }
 
+    private int mId;
     private long mRssId;
     private String mPubDate;
     private String mTitle;
@@ -41,6 +43,14 @@ public class Post {
 
     public Post() {
 
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        this.mId = id;
     }
 
     public long getRssId() {
@@ -69,6 +79,10 @@ public class Post {
 
     public String getDescription() {
         return mDescription;
+    }
+
+    public android.text.Spanned getDescriptionAsHtml() {
+        return Html.fromHtml(mDescription);
     }
 
     public void setDescription(String description) {
@@ -113,6 +127,7 @@ public class Post {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME + (where != null ? where : ""), whereArgs);
         if (c.moveToFirst()) {
 
+            int iId = c.getColumnIndex(Columns._id.name());
             int iRssId = c.getColumnIndex(Columns.rss_id.name());
             int iTitle = c.getColumnIndex(Columns.title.name());
             int iLink = c.getColumnIndex(Columns.link.name());
@@ -121,6 +136,7 @@ public class Post {
 
             do {
                 Post post = new Post();
+                post.setId(c.getInt(iId));
                 post.setRssId(c.getLong(iRssId));
                 post.setTitle(c.getString(iTitle));
                 post.setLink(c.getString(iLink));
@@ -138,5 +154,9 @@ public class Post {
         return query(context, " WHERE " + Columns.rss_id.name() + "=?", new String[]{String.valueOf(rssId)});
     }
 
+    public static Post getById(Context context, int id) {
+        List<Post> posts = query(context, " WHERE " + Columns._id.name() + "=?", new String[]{String.valueOf(id)});
+        return posts.size() > 0 ? posts.get(0) : null;
+    }
 
 }

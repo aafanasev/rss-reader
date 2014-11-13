@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.jokuskay.rss_reader.R;
 import com.jokuskay.rss_reader.adapters.RssAdapter;
@@ -122,7 +121,7 @@ public class RssListActivity extends ActionBarActivity implements AddRssDialog.O
             Rss rss = (Rss) intent.getExtras().getSerializable("rss");
             if (rss != null) {
                 mRssList.add(rss);
-                mAdapter.notifyItemInserted(mRssList.size());
+                mAdapter.notifyItemInserted(0);
             } else {
                 Toast.makeText(RssListActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }

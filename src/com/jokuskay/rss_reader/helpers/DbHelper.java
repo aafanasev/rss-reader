@@ -14,7 +14,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static DbHelper instance;
 
     private static final String DB_NAME = "rss.db";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 5;
 
     public static DbHelper getInstance(Context context) {
         if (instance == null) {
@@ -46,6 +46,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + Rss.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Post.TABLE_NAME);
+
+        onCreate(db);
     }
 
     private String getTableCreateSql(String tableName, DbColumns[] cols) {
