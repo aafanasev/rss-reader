@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 import com.jokuskay.rss_reader.R;
 import com.jokuskay.rss_reader.models.Rss;
@@ -13,12 +12,12 @@ import java.util.List;
 
 public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
 
-    private AdapterView.OnItemClickListener mClickListener;
+    private OnRssListActionListener mListener;
     private List<Rss> mRssList;
 
-    public RssAdapter(List<Rss> rssList, AdapterView.OnItemClickListener clickListener) {
+    public RssAdapter(OnRssListActionListener listener, List<Rss> rssList) {
         mRssList = rssList;
-        mClickListener = clickListener;
+        mListener = listener;
     }
 
     @Override
@@ -41,10 +40,14 @@ public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
     }
 
     public void onItemClick(ViewHolder holder) {
-        mClickListener.onItemClick(null, holder.itemView, holder.getPosition(), holder.getItemId());
+        mListener.onItemClick(holder.getPosition());
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private void onItemLongClick(ViewHolder holder) {
+        mListener.onItemLongClick(holder.getPosition());
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public TextView mRssTitle;
         public TextView mRssUrl;
 
@@ -53,6 +56,7 @@ public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
         public ViewHolder(View v, RssAdapter adapter) {
             super(v);
             v.setOnClickListener(this);
+            v.setOnLongClickListener(this);
 
             mAdapter = adapter;
 
@@ -64,7 +68,17 @@ public class RssAdapter extends RecyclerView.Adapter<RssAdapter.ViewHolder> {
         public void onClick(View v) {
             mAdapter.onItemClick(this);
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+            mAdapter.onItemLongClick(this);
+            return true;
+        }
     }
 
+    public static interface OnRssListActionListener {
+        public abstract void onItemClick(int position);
+        public abstract void onItemLongClick(int position);
+    }
 
 }

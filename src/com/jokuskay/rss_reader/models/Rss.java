@@ -136,4 +136,12 @@ public class Rss implements Serializable {
         }
     }
 
+    public void remove(Context context) {
+        Post.removeAll(context, mId);
+
+        DbHelper dbHelper = DbHelper.getInstance(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + Columns._id.name() + "=" + mId);
+    }
+
 }

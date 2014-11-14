@@ -27,6 +27,12 @@ public class AddRssDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mListener.onAddRssDialogClose();
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,12 +59,7 @@ public class AddRssDialog extends DialogFragment {
                         mListener.onAddRssDialogAction(input.getText().toString());
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.onAddRssDialogClose();
-                    }
-                });
+                .setNegativeButton("Cancel", null);
 
         return adb.create();
     }

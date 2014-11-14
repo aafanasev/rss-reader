@@ -3,6 +3,7 @@ package com.jokuskay.rss_reader.services;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import com.jokuskay.rss_reader.models.Post;
 import com.jokuskay.rss_reader.models.Rss;
 import org.xmlpull.v1.XmlPullParser;
@@ -27,9 +28,11 @@ public class GetPostsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-//        String url = intent.getStringExtra(Rss.Columns.url.name());
+        String url = intent.getStringExtra(Rss.Columns.url.name());
 //        String url = "http://lenta.ru/rss";
-        String url = "http://habrahabr.ru/rss";
+//        String url = "http://habrahabr.ru/rss";
+
+        Log.d(TAG, "rss: " + url);
 
         mRss = Rss.getByUrl(this, url);
         if (mRss == null) {
